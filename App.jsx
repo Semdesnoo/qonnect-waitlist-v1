@@ -4,7 +4,7 @@ import {
   Sparkles, Briefcase, User, ArrowRight, CheckCircle, X, Heart, 
   MessageSquare, LayoutDashboard, Bell, Eye, Clock, Lock, 
   FileText, Brain, Search, Target, Users, Globe, Database, 
-  ChevronDown, Key
+  ChevronDown, Key, Shield, Zap, Cpu
 } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
@@ -27,8 +27,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// We gebruiken nu een vaste ID voor jouw eigen database.
-// Dit voorkomt fouten met rare tekens in de ID.
 const appId = 'qonnect-prod'; 
 
 // --- Translations ---
@@ -53,6 +51,17 @@ const content = {
       recTitle: "Voor Recruiters & ZZP",
       recDesc: "Waarom betalen voor een heel recruitment team? Qonnect automatiseert sourcing en screening. Plaats een vacature en laat AI de tekst optimaliseren.",
       recPoints: ["1 Recruiter doet het werk van 10", "Pre-screened talent in je feed", "Direct chatten bij een match"]
+    },
+    agents: {
+      title: "Autonome Agent Architectuur",
+      subtitle: "Onze AI bestaat uit gespecialiseerde agents die 24/7 voor je werken.",
+      headers: ["PIJNPUNT", "QONNECT AGENT", "ALGORITMISCHE OPLOSSING"],
+      list: [
+        { pain: "Slechte Matches", agent: "Deep Match Agent", icon: Brain, solution: "Analyseert kandidaten op 50+ datapunten (cultuur, skills, potentie) voor de perfecte fit." },
+        { pain: "Eindeloos Sourcing", agent: "Sniper Sourcing Agent", icon: Target, solution: "Scant continu het web om passieve kandidaten te vinden die precies passen bij jouw vacature." },
+        { pain: "Bias & Discriminatie", agent: "Fair Play Agent", icon: Shield, solution: "Garandeert integriteit door profielen te anonimiseren en te screenen op onbewuste vooroordelen." },
+        { pain: "Trage Communicatie", agent: "Coordinator Agent", icon: Zap, solution: "Automatiseert follow-ups, plant interviews en houdt kandidaten warm zonder menselijke tussenkomst." }
+      ]
     },
     problem: {
       title: "HET SYSTEEM IS",
@@ -110,7 +119,7 @@ const content = {
     hero: {
       tag: "The Future of Recruitment OS",
       titleStart: "STOP SEARCHING", titleEnd: "START", highlight: "MATCHING",
-      subtitle: "Qonnect is not a job board, but an intelligent operating system. We replace manual searching with AI-driven matching.",
+      subtitle: "Qonnect is not a job board, but an intelligent operating system for your career or business. We replace manual searching with AI-driven matching based on DNA, skills, and ambitions.",
       roleCandidate: "Candidate", roleRecruiter: "Recruiter",
       placeholderCandidate: "you@example.com", placeholderRecruiter: "work@company.com",
       joinBtn: "Join Qonnect", loading: "Loading...",
@@ -125,6 +134,17 @@ const content = {
       recTitle: "For Recruiters & Freelancers",
       recDesc: "Why pay for an entire recruitment team? Qonnect automates sourcing and screening. Post a job and let AI optimize the text for maximum conversion.",
       recPoints: ["1 Recruiter does the work of 10", "Pre-screened talent in your feed", "Direct chat upon matching"]
+    },
+    agents: {
+      title: "Autonomous Agent Architecture",
+      subtitle: "Our AI consists of specialized agents working for you 24/7.",
+      headers: ["PAIN POINT", "QONNECT AGENT", "ALGORITHMIC SOLUTION"],
+      list: [
+        { pain: "Poor Matches", agent: "Deep Match Agent", icon: Brain, solution: "Analyzes candidates on 50+ data points (culture, skills, potential) for the perfect fit." },
+        { pain: "Endless Sourcing", agent: "Sniper Sourcing Agent", icon: Target, solution: "Continuously scans the web to find passive candidates that exactly match your vacancy." },
+        { pain: "Bias & Discrimination", agent: "Fair Play Agent", icon: Shield, solution: "Guarantees integrity by anonymizing profiles and screening for unconscious bias." },
+        { pain: "Slow Communication", agent: "Coordinator Agent", icon: Zap, solution: "Automates follow-ups, schedules interviews, and keeps candidates warm without human intervention." }
+      ]
     },
     problem: {
       title: "THE SYSTEM IS",
@@ -215,7 +235,6 @@ const AdminView = ({ onClose }) => {
 
   const fetchData = () => {
     setLoading(true);
-    // Use the strict appId 'qonnect-prod'
     const q = query(
       collection(db, 'artifacts', appId, 'public', 'data', 'waitlist_entries'),
       orderBy('createdAt', 'desc')
@@ -475,6 +494,60 @@ export default function WaitlistApp() {
                   <h3 className="text-2xl font-heading font-bold text-slate-900 mb-3">{t.about.recTitle}</h3>
                   <p className="text-slate-500 text-sm leading-relaxed mb-4">{t.about.recDesc}</p>
                   <ul className="text-slate-500 text-xs space-y-2 font-mono">{t.about.recPoints.map((p, i) => (<li key={i} className="flex items-center gap-2"><CheckCircle className="w-3 h-3 text-purple-600"/> {p}</li>))}</ul>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* NEW: Autonomous Agent Architecture Section (Recreated from dark Linaris image) */}
+      <section className="py-24 bg-slate-900 border-t border-slate-800 text-white relative overflow-hidden">
+         {/* Abstract background elements */}
+         <div className="absolute top-0 right-0 w-1/3 h-full bg-indigo-500/5 blur-[100px]"></div>
+         <div className="absolute bottom-0 left-0 w-1/3 h-full bg-purple-500/5 blur-[100px]"></div>
+
+         <div className="max-w-6xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-16">
+               <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">{t.agents.title}</h2>
+               <p className="text-slate-400 max-w-2xl mx-auto">{t.agents.subtitle}</p>
+            </div>
+
+            {/* The Table-like Grid */}
+            <div className="border border-slate-800 rounded-2xl overflow-hidden bg-slate-900/50 backdrop-blur-sm">
+               {/* Headers (Desktop) */}
+               <div className="hidden md:grid grid-cols-12 gap-4 p-4 border-b border-slate-800 bg-slate-950 text-xs font-bold text-slate-500 tracking-widest uppercase">
+                  <div className="col-span-3">{t.agents.headers[0]}</div>
+                  <div className="col-span-4">{t.agents.headers[1]}</div>
+                  <div className="col-span-5">{t.agents.headers[2]}</div>
+               </div>
+
+               {/* Rows */}
+               <div className="divide-y divide-slate-800">
+                  {t.agents.list.map((agent, i) => (
+                     <div key={i} className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-4 p-6 hover:bg-white/5 transition-colors items-start">
+                        {/* Pain Point */}
+                        <div className="md:col-span-3">
+                           <span className="md:hidden text-[10px] text-red-400 font-bold uppercase tracking-widest block mb-1">{t.agents.headers[0]}</span>
+                           <h4 className="text-red-400 font-bold text-sm">{agent.pain}</h4>
+                        </div>
+                        
+                        {/* Agent */}
+                        <div className="md:col-span-4 flex items-center gap-3">
+                           <div className="p-2 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 shrink-0">
+                              <agent.icon className="w-5 h-5" />
+                           </div>
+                           <div>
+                              <span className="md:hidden text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-1">{t.agents.headers[1]}</span>
+                              <h4 className="font-bold text-white text-sm">{agent.agent}</h4>
+                           </div>
+                        </div>
+
+                        {/* Solution */}
+                        <div className="md:col-span-5">
+                           <span className="md:hidden text-[10px] text-slate-500 font-bold uppercase tracking-widest block mb-1">{t.agents.headers[2]}</span>
+                           <p className="text-slate-400 text-sm leading-relaxed">{agent.solution}</p>
+                        </div>
+                     </div>
+                  ))}
                </div>
             </div>
          </div>
