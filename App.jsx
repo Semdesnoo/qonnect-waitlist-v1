@@ -4,7 +4,7 @@ import {
   Sparkles, Briefcase, User, ArrowRight, CheckCircle, X, Heart, 
   MessageSquare, LayoutDashboard, Bell, Eye, Clock, Lock, 
   FileText, Brain, Search, Target, Users, Globe, Database, 
-  ChevronDown, Key, Shield, Zap, Cpu
+  ChevronDown, Key, Shield, Zap
 } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
@@ -222,13 +222,11 @@ const AdminView = ({ onClose }) => {
   
   // VEILIGHEID: We slaan hier GEEN leesbaar wachtwoord op.
   // Dit is de Base64 versie van 'Qonnect2025!'
-  // Hierdoor kunnen mensen op GitHub je wachtwoord niet direct lezen.
   const ADMIN_HASH = 'UW9ubmVjdDIwMjUh';
 
   const handleLogin = (e) => {
     e.preventDefault();
     
-    // We coderen de invoer en vergelijken die met de opgeslagen hash
     try {
         if (btoa(password) === ADMIN_HASH) {
             setIsAuthenticated(true);
@@ -635,7 +633,7 @@ export default function WaitlistApp() {
              <button onClick={() => setShowAdmin(!showAdmin)} className="bg-white border border-slate-200 text-slate-500 px-6 py-4 rounded-full font-bold text-xs uppercase hover:bg-slate-50">Admin Login</button>
            </div>
            <div className="flex justify-center gap-8 text-[10px] text-slate-400 font-mono uppercase tracking-widest"><a href="#" className="hover:text-indigo-600 transition-colors">{t.footer.privacy}</a><a href="#" className="hover:text-indigo-600 transition-colors">{t.footer.terms}</a><a href="#" className="hover:text-indigo-600 transition-colors">{t.footer.contact}</a></div>
-           <p className="text-slate-300 text-[10px] mt-8 font-mono">© 2025 QONNECT SYSTEMS INC.</p>
+           <p className="text-slate-300 text-[10px] mt-8 font-mono">© 2025 QONNECT SYSTEMS INC. (v1.1)</p>
         </div>
       </footer>
       
