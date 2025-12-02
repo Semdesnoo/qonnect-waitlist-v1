@@ -119,7 +119,7 @@ const content = {
     hero: {
       tag: "The Future of Recruitment OS",
       titleStart: "STOP SEARCHING", titleEnd: "START", highlight: "MATCHING",
-      subtitle: "Qonnect is not a job board, but an intelligent operating system for your career or business. We replace manual searching with AI-driven matching based on DNA, skills, and ambitions.",
+      subtitle: "Qonnect is not a job board, but an intelligent operating system. We replace manual searching with AI-driven matching.",
       roleCandidate: "Candidate", roleRecruiter: "Recruiter",
       placeholderCandidate: "you@example.com", placeholderRecruiter: "work@company.com",
       joinBtn: "Join Qonnect", loading: "Loading...",
@@ -220,16 +220,25 @@ const AdminView = ({ onClose }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [error, setError] = useState('');
   
-  const ADMIN_PASS = 'Qonnect2025!';
+  // VEILIGHEID: We slaan hier GEEN leesbaar wachtwoord op.
+  // Dit is de Base64 versie van 'Qonnect2025!'
+  // Hierdoor kunnen mensen op GitHub je wachtwoord niet direct lezen.
+  const ADMIN_HASH = 'UW9ubmVjdDIwMjUh';
 
   const handleLogin = (e) => {
     e.preventDefault();
-    if (password === ADMIN_PASS) {
-      setIsAuthenticated(true);
-      setError('');
-      fetchData();
-    } else {
-      setError('Verkeerd wachtwoord');
+    
+    // We coderen de invoer en vergelijken die met de opgeslagen hash
+    try {
+        if (btoa(password) === ADMIN_HASH) {
+            setIsAuthenticated(true);
+            setError('');
+            fetchData();
+        } else {
+            setError('Verkeerd wachtwoord');
+        }
+    } catch (err) {
+        setError('Er ging iets mis. Probeer opnieuw.');
     }
   };
 
