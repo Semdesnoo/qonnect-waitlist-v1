@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-// ✅ FIX: Alle iconen (inclusief Check en Plus) zijn nu correct geïmporteerd
+// ✅ FIX: Alle iconen (inclusief Check, Plus en Mail) zijn nu correct geïmporteerd
 import { 
   Sparkles, Briefcase, User, ArrowRight, CheckCircle, X, Heart, 
   MessageSquare, LayoutDashboard, Bell, Eye, Clock, Lock, 
   FileText, Brain, Search, Target, Users, Globe, Database, 
   ChevronDown, Key, Shield, Zap,
   RefreshCw, Route, Archive, KeyRound, Link2, BarChart3, CloudLightning, Smartphone, ShieldCheck, Map, CreditCard,
-  ScanLine, PenTool, Layers, Check, Wand2, Plus
+  ScanLine, PenTool, Layers, Check, Wand2, Plus, Mail
 } from 'lucide-react';
 import { initializeApp } from 'firebase/app';
 import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from 'firebase/auth';
@@ -50,7 +50,8 @@ const content = {
       placeholderCandidate: "jouw@email.nl", placeholderRecruiter: "werk@bedrijf.nl",
       joinBtn: "Join Qonnect", loading: "Laden...",
       successTitle: "Aanmelding geslaagd!", 
-      successSub: "We houden je op de hoogte."
+      successSub: "We houden je op de hoogte.",
+      launchDeal: "🎉 Launch Deal: 1e maand gratis!"
     },
     aiDemo: {
       title: "Ervaar de Magie van AI ✨",
@@ -239,12 +240,14 @@ const content = {
     nav: { about: "About", process: "Process", features: "Features", ai: "AI Demo", pricing: "Pricing", faq: "FAQ", access: "Early Access" },
     hero: {
       tag: "The Future of Recruitment OS",
-      titleStart: "DONE WITH ENDLESSLY", titleEnd: "SEARCHING FOR THE", highlight: "BEST CANDIDATE?",
-      subtitle: "No more buying expensive leads or sending messages to uninterested candidates on LinkedIn. Qonnect is the app that delivers the perfect match!",
+      titleStart: "STOP SEARCHING", titleEnd: "START", highlight: "MATCHING",
+      subtitle: "Qonnect lets companies and candidates find each other via smart AI matching instead of searching. For candidates: opportunities that fit. For companies: direct access to relevant talent.",
       roleCandidate: "Candidate", roleRecruiter: "Recruiter",
       placeholderCandidate: "you@example.com", placeholderRecruiter: "work@company.com",
       joinBtn: "Join Qonnect", loading: "Loading...",
-      successTitle: "Registration Successful!", successSub: "We'll keep you posted."
+      successTitle: "Registration Successful!", 
+      successSub: "We'll keep you posted.",
+      launchDeal: "🎉 Launch Deal: 1st month free!"
     },
     aiDemo: {
       title: "Experience the Magic of AI ✨",
@@ -534,10 +537,7 @@ const PricingSection = ({ t }) => {
 
           {/* Candidate View */}
           {view === 'candidate' && (
-             <motion.div 
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-3xl p-10 text-center shadow-xl"
-             >
+             <div className="max-w-2xl mx-auto bg-white border border-slate-200 rounded-3xl p-10 text-center shadow-xl">
                 <div className="w-16 h-16 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6">
                    <User className="w-8 h-8 text-indigo-600" />
                 </div>
@@ -553,16 +553,13 @@ const PricingSection = ({ t }) => {
                       </div>
                    ))}
                 </div>
-                <button onClick={() => document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })} className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors">Start nu gratis</button>
-             </motion.div>
+                <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="w-full py-4 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors">Start nu gratis</button>
+             </div>
           )}
 
           {/* Recruiter View */}
           {view === 'recruiter' && (
-             <motion.div 
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start"
-             >
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
                 {t.recruiter.plans.map((plan, i) => {
                    // Calculate 30% discount if yearly
                    const price = billing === 'yearly' ? Math.round(plan.price * 0.7) : plan.price;
@@ -598,7 +595,7 @@ const PricingSection = ({ t }) => {
                         </ul>
                         
                         <button 
-                          onClick={() => document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })}
+                          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                           className={`w-full py-3 rounded-xl font-bold text-sm transition-colors ${plan.highlight ? 'bg-indigo-600 text-white hover:bg-indigo-700' : 'bg-slate-50 text-slate-900 hover:bg-slate-100'}`}
                         >
                            Kies {plan.name}
@@ -606,7 +603,7 @@ const PricingSection = ({ t }) => {
                      </div>
                    );
                 })}
-             </motion.div>
+             </div>
           )}
        </div>
     </section>
@@ -731,18 +728,11 @@ const AgentSection = ({ t }) => {
 
         <div className="grid md:grid-cols-2 gap-6">
           {t.list.map((agent, i) => (
-            <motion.div
+            <div
               key={i}
-              initial={{ opacity: 0, x: i % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.1 }}
-              whileHover={{ scale: 1.02, translateY: -5 }}
-              className="relative p-8 bg-slate-50 rounded-3xl border border-slate-200 overflow-hidden group hover:shadow-xl transition-all cursor-default h-full flex flex-col" // Added h-full flex flex-col
+              className="relative p-8 bg-slate-50 rounded-3xl border border-slate-200 overflow-hidden group hover:shadow-xl hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300 cursor-default h-full flex flex-col" 
             >
-               {/* Shimmer effect */}
-               <div className="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/50 to-transparent z-0" />
-               
-               <div className="relative z-10 flex items-start gap-4 flex-1"> {/* Added flex-1 */}
+               <div className="relative z-10 flex items-start gap-4 flex-1">
                   <div className="p-3 bg-white rounded-2xl shadow-sm text-indigo-600 border border-slate-100 group-hover:text-indigo-500 group-hover:scale-110 transition-all duration-300">
                     <agent.icon className="w-8 h-8 group-hover:animate-pulse" />
                   </div>
@@ -755,15 +745,10 @@ const AgentSection = ({ t }) => {
                     <p className="text-slate-500 text-sm leading-relaxed">{agent.solution}</p>
                   </div>
                </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
-      <style>{`
-        @keyframes shimmer {
-          100% { transform: translateX(100%); }
-        }
-      `}</style>
     </section>
   );
 }
@@ -831,13 +816,12 @@ export default function WaitlistApp() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans overflow-x-hidden">
       <GlobalStyles />
-      {/* Gradient blobs */}
-      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden"><div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-indigo-50/80 rounded-full blur-[120px]" /><div className="absolute bottom-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-purple-50/80 rounded-full blur-[120px]" /></div>
-
+      
+      {/* Nav */}
       <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-[95%] max-w-2xl">
         <div className="bg-white/80 backdrop-blur-xl border border-slate-200 rounded-full px-5 py-3 flex justify-between items-center shadow-sm">
            <div className="flex items-center gap-2"><div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center"><Sparkles className="w-4 h-4 text-white" /></div><span className="font-heading font-bold text-lg">QONNECT</span></div>
-           <div className="flex items-center gap-2"><button onClick={toggleLang} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:border-indigo-200 hover:text-indigo-600 transition-colors shadow-sm"><Globe className="w-3.5 h-3.5" /> {lang.toUpperCase()}</button><button onClick={() => document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })} className="bg-slate-900 text-white px-4 py-2 rounded-full text-[11px] font-bold hover:bg-slate-800 transition-colors">{t.nav.access}</button></div>
+           <div className="flex items-center gap-2"><button onClick={toggleLang} className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-700 hover:border-indigo-200 hover:text-indigo-600 transition-colors shadow-sm"><Globe className="w-3.5 h-3.5" /> {lang.toUpperCase()}</button><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="bg-slate-900 text-white px-4 py-2 rounded-full text-[11px] font-bold hover:bg-slate-800 transition-colors">{t.nav.access}</button></div>
         </div>
       </nav>
 
@@ -849,9 +833,44 @@ export default function WaitlistApp() {
          <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="bg-white border border-slate-200 p-2 rounded-2xl shadow-xl max-w-md mx-auto">
             <div className="flex bg-slate-50 p-1 rounded-xl mb-2"><button onClick={() => setRole('candidate')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${role === 'candidate' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-400'}`}>{t.hero.roleCandidate}</button><button onClick={() => setRole('recruiter')} className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${role === 'recruiter' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-400'}`}>{t.hero.roleRecruiter}</button></div>
             <div id="waitlist">
-              {submitted ? <div className="py-4 text-emerald-600 font-bold flex flex-col items-center"><CheckCircle className="mb-2"/>{t.hero.successTitle}</div> : 
-              <form onSubmit={handleSubmit} className="flex gap-2"><input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder={role === 'candidate' ? t.hero.placeholderCandidate : t.hero.placeholderRecruiter} className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500" /><button disabled={loading} className="bg-indigo-600 text-white px-6 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-colors">{loading ? "..." : "JOIN"}</button></form>}
-              {formError && <p className="text-red-500 text-[10px] mt-2">{formError}</p>}
+              {submitted ? (
+                 <motion.div 
+                   initial={{ scale: 0.8, opacity: 0 }}
+                   animate={{ scale: 1, opacity: 1 }}
+                   transition={{ type: "spring", duration: 0.6 }}
+                   className="py-8 px-6 bg-emerald-50 rounded-xl border border-emerald-100 flex flex-col items-center text-center"
+                 >
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4">
+                       <CheckCircle className="w-8 h-8 text-emerald-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-slate-900 mb-2">{t.hero.successTitle}</h3>
+                    <p className="text-slate-500 text-sm">{t.hero.successSub}</p>
+                 </motion.div>
+              ) : (
+                <form onSubmit={handleSubmit} className="flex gap-2">
+                  <div className="relative flex-1">
+                    <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400" />
+                    <input 
+                      type="email" 
+                      required 
+                      value={email} 
+                      onChange={(e) => setEmail(e.target.value)} 
+                      placeholder={role === 'candidate' ? t.hero.placeholderCandidate : t.hero.placeholderRecruiter} 
+                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500 transition-all" 
+                    />
+                  </div>
+                  <button disabled={loading} className="bg-indigo-600 text-white px-6 rounded-xl font-bold text-xs hover:bg-indigo-700 transition-colors flex items-center gap-2">
+                    {loading ? "..." : "JOIN"} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </form>
+              )}
+              {!submitted && role === 'recruiter' && (
+                 <div className="mt-3 p-2 bg-indigo-50 border border-indigo-100 rounded-lg flex items-center justify-center gap-2 text-[10px] text-indigo-700 font-medium animate-pulse">
+                    <Sparkles className="w-3 h-3" />
+                    {t.hero.launchDeal}
+                 </div>
+              )}
+              {!submitted && formError && <p className="text-red-500 text-[10px] mt-2">{formError}</p>}
             </div>
          </motion.div>
       </header>
@@ -874,7 +893,7 @@ export default function WaitlistApp() {
       <section id="how" className="py-32 relative border-t border-slate-200 bg-white">
          <div className="max-w-7xl mx-auto px-6">
             <h2 className="text-sm font-bold text-slate-400 uppercase tracking-widest mb-16">{t.steps.title}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">{[{ step: "01", ...t.steps.s1, icon: FileText }, { step: "02", ...t.steps.s2, icon: Brain }, { step: "03", ...t.steps.s3, icon: Search }, { step: "04", ...t.steps.s4, icon: MessageSquare }].map((item, i) => (<motion.div key={i} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }} viewport={{ once: true }} className="relative group pt-6"><div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-slate-200 to-transparent mb-6"></div><div className="flex justify-between items-start mb-6"><span className="text-4xl font-heading font-bold text-slate-100 group-hover:text-indigo-500 group-hover:drop-shadow-lg transition-all duration-300">{item.step}</span><item.icon className="w-5 h-5 text-slate-400" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3><p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p></motion.div>))}</div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">{[{ step: "01", ...t.steps.s1, icon: FileText }, { step: "02", ...t.steps.s2, icon: Brain }, { step: "03", ...t.steps.s3, icon: Search }, { step: "04", ...t.steps.s4, icon: MessageSquare }].map((item, i) => (<div key={i} className="relative group pt-6"><div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-slate-200 to-transparent mb-6"></div><div className="flex justify-between items-start mb-6"><span className="text-4xl font-heading font-bold text-slate-100 group-hover:text-indigo-500 group-hover:drop-shadow-lg transition-all duration-300">{item.step}</span><item.icon className="w-5 h-5 text-slate-400" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">{item.title}</h3><p className="text-slate-500 text-xs leading-relaxed">{item.desc}</p></div>))}</div>
          </div>
       </section>
 
@@ -894,7 +913,7 @@ export default function WaitlistApp() {
          <div className="text-center mb-16 max-w-2xl mx-auto"><h2 className="text-4xl md:text-5xl font-heading font-bold text-slate-900 mb-4">{t.modernFeatures.title}</h2><p className="text-slate-500">{t.modernFeatures.subtitle}</p></div>
          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 grid sm:grid-cols-2 gap-6">{t.modernFeatures.leftCards.map((card, i) => (<div key={i} className="bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition-shadow flex flex-col h-full"><div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-4 ${card.color}`}><card.icon className="w-5 h-5" /></div><h3 className="text-lg font-bold text-slate-900 mb-2">{card.title}</h3><p className="text-slate-500 text-xs leading-relaxed mb-4 flex-grow">{card.desc}</p><div className="pt-4 border-t border-slate-100"><div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-wider">{card.aiTag && <><Sparkles className="w-3 h-3 text-purple-500" /> {card.aiTag}</>}{card.status && <><div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"/> {card.status}</>}{card.rating && <><div className="text-yellow-500">★★★★★</div> {card.rating}</>}{card.policy && <><Shield className="w-3 h-3 text-pink-500" /> {card.policy}</>}</div></div></div>))}</div>
-            <div className="lg:col-span-1 bg-[#111] rounded-2xl p-8 text-white flex flex-col justify-between relative overflow-hidden group"><div className="relative z-10"><span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-bold uppercase tracking-widest mb-6 text-emerald-400">{t.modernFeatures.rightCard.tag}</span><h3 className="text-3xl font-heading font-bold mb-4 leading-tight">{t.modernFeatures.rightCard.title}</h3><p className="text-gray-400 text-sm mb-8 leading-relaxed">{t.modernFeatures.rightCard.desc}</p><div className="relative mt-8 h-64 w-full overflow-hidden rounded-xl border border-white/10 shadow-2xl transform group-hover:scale-105 transition-transform duration-500"><DashboardMockup t={t.ui} /></div></div><div className="mt-8 pt-6 border-t border-white/10 flex justify-between items-center relative z-10"><button onClick={() => document.getElementById('waitlist').scrollIntoView({ behavior: 'smooth' })} className="bg-white text-black px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-colors flex items-center gap-1">{t.modernFeatures.rightCard.cta} <ArrowRight className="w-3 h-3" /></button></div><div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-indigo-900/20 via-transparent to-emerald-900/20 pointer-events-none" /></div>
+            <div className="lg:col-span-1 bg-[#111] rounded-2xl p-8 text-white flex flex-col justify-between relative overflow-hidden group"><div className="relative z-10"><span className="inline-block px-3 py-1 rounded-full bg-white/10 border border-white/10 text-[10px] font-bold uppercase tracking-widest mb-6 text-emerald-400">{t.modernFeatures.rightCard.tag}</span><h3 className="text-3xl font-heading font-bold mb-4 leading-tight">{t.modernFeatures.rightCard.title}</h3><p className="text-gray-400 text-sm mb-8 leading-relaxed">{t.modernFeatures.rightCard.desc}</p><div className="relative mt-8 h-64 w-full overflow-hidden rounded-xl border border-white/10 shadow-2xl transform group-hover:scale-105 transition-transform duration-500"><DashboardMockup t={t.ui} /></div></div><div className="mt-8 pt-6 border-t border-white/10 flex justify-between items-center relative z-10"><button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="bg-white text-black px-4 py-2 rounded-full text-xs font-bold hover:bg-gray-200 transition-colors flex items-center gap-1">{t.modernFeatures.rightCard.cta} <ArrowRight className="w-3 h-3" /></button></div><div className="absolute top-0 right-0 w-full h-full bg-gradient-to-br from-indigo-900/20 via-transparent to-emerald-900/20 pointer-events-none" /></div>
          </div>
       </section>
 
