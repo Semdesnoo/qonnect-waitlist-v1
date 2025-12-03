@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
-// ✅ FIX: Alle iconen (inclusief Check, Plus en Mail) zijn nu correct geïmporteerd
 import { 
   Sparkles, Briefcase, User, ArrowRight, CheckCircle, X, Heart, 
   MessageSquare, LayoutDashboard, Bell, Eye, Clock, Lock, 
@@ -14,7 +13,8 @@ import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken }
 import { getFirestore, collection, addDoc, serverTimestamp, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 // --- Gemini API Setup ---
-const apiKey = ""; // Wordt automatisch ingevuld
+// 🔴 BELANGRIJK: Plak hieronder jouw eigen API Key tussen de aanhalingstekens om de AI te laten werken op Vercel!
+const apiKey = "AIzaSyD4fZHUIXZ013yHWeP04krNLqbOGJe71yk"; 
 
 // --- Firebase Setup ---
 const userConfig = {
@@ -64,7 +64,8 @@ const content = {
       placeholderCandidate: "Plak hier je ervaring of skills...", 
       btn: "Genereer Profiel ✨", 
       resultTitle: "Jouw AI Resultaat:",
-      placeholderResult: "Het resultaat verschijnt hier..."
+      placeholderResult: "Het resultaat verschijnt hier...",
+      errorNoKey: "⚠️ API Key ontbreekt. Vul 'const apiKey' in bovenin de code."
     },
     pricing: {
       title: "Transparante Prijzen",
@@ -240,8 +241,8 @@ const content = {
     nav: { about: "About", process: "Process", features: "Features", ai: "AI Demo", pricing: "Pricing", faq: "FAQ", access: "Early Access" },
     hero: {
       tag: "The Future of Recruitment OS",
-      titleStart: "STOP SEARCHING", titleEnd: "START", highlight: "MATCHING",
-      subtitle: "Qonnect lets companies and candidates find each other via smart AI matching instead of searching. For candidates: opportunities that fit. For companies: direct access to relevant talent.",
+      titleStart: "DONE WITH ENDLESSLY", titleEnd: "SEARCHING FOR THE", highlight: "BEST CANDIDATE?",
+      subtitle: "No more buying expensive leads or sending messages to uninterested candidates on LinkedIn. Qonnect is the app that delivers the perfect match!",
       roleCandidate: "Candidate", roleRecruiter: "Recruiter",
       placeholderCandidate: "you@example.com", placeholderRecruiter: "work@company.com",
       joinBtn: "Join Qonnect", loading: "Loading...",
@@ -260,7 +261,8 @@ const content = {
       placeholderCandidate: "Paste your experience or skills here...",
       btn: "Generate Profile ✨",
       resultTitle: "Your AI Result:",
-      placeholderResult: "Result will appear here..."
+      placeholderResult: "Result will appear here...",
+      errorNoKey: "⚠️ API Key missing. Fill in 'const apiKey' at the top."
     },
     pricing: {
       title: "Transparent Pricing",
@@ -326,29 +328,7 @@ const content = {
       title: "How Qonnect Works", s1: { title: "Upload & Analyze", desc: "Drag your CV into the app. Our AI scans not just for keywords, but understands context." }, s2: { title: "Profile Creation", desc: "A rich profile with a beautiful dashboard is created instantly. You tweak, AI learns." }, s3: { title: "AI Matching", desc: "Our algorithm searches 24/7 for the perfect match between job and profile." }, s4: { title: "Direct Contact", desc: "Is there a mutual 'Like'? Then the chat opens immediately. No waiting times." }
     },
     faq: {
-      title: "Frequently Asked Questions", 
-      items: [ 
-        { 
-          q: "Is Qonnect truly 100% free for candidates?", 
-          a: "Yes, absolutely. In today's job market, talent is the most valuable asset. We believe you shouldn't have to pay to be found. You get free access to all premium features: AI resume analysis, unlimited swiping, and direct chat with hiring managers." 
-        },
-        { 
-          q: "How does Qonnect protect my privacy?", 
-          a: "Your profile is anonymized by default. Recruiters see your skills, culture fit score, and experience, but not your name, photo, or current employer. Your details are only revealed once you 'like' a job AND there is a match. Search safely and discreetly." 
-        },
-        { 
-          q: "How is AI matching different from a search bar?", 
-          a: "Traditional sites look for keywords. Our AI understands context. It recognizes that a 'Marketer' who knows 'Python' might be perfect for 'Growth Hacking', even if that term isn't on your CV. We match on DNA, ambition, and potential, not just keywords." 
-        },
-        { 
-          q: "I'm a Freelancer, is this for me?", 
-          a: "Definitely! Qonnect features a special 'Gig Mode'. This allows you to swipe through temporary assignments and projects. The system automatically filters on hourly rates and availability, saving you negotiation time." 
-        },
-        { 
-          q: "When can I download the app?", 
-          a: "We are currently in an exclusive 'Private Beta'. By joining the waitlist above, you secure your spot. As soon as we open up the next batch (very soon!), you will receive an immediate invitation via email." 
-        } 
-      ]
+      title: "Frequently Asked Questions", items: [ { q: "Is Qonnect free?", a: "For candidates, Qonnect is 100% free. Companies pay upon success." }, { q: "What about privacy?", a: "Your profile is anonymous until you accept a match." }, { q: "Can I use this as Freelancer?", a: "Yes, Qonnect has a dedicated module for freelance gigs." }, { q: "When is the launch?", a: "We are in private beta. Sign up for priority access." } ]
     },
     footer: { title: "Ready for the New Generation?", desc: "Join the movement and experience recruitment as it should be.", btn: "Join Qonnect", privacy: "Privacy", terms: "Terms", contact: "Contact" },
     ui: { matches: "Matches", views: "Views", score: "Score", optimal: "Optimal", recs: "AI Recommendations", skip: "Skip", match: "Match", active: "Active 2h ago" }
@@ -375,6 +355,13 @@ const InteractiveAIDemo = ({ t }) => {
 
   const handleGenerate = async () => {
     if (!input) return;
+    
+    // CHECK: Is er een API key?
+    if (!apiKey) {
+      setResult(t.aiDemo.errorNoKey);
+      return;
+    }
+
     setLoading(true);
     setResult('');
 
@@ -486,7 +473,7 @@ const InteractiveAIDemo = ({ t }) => {
 
 const PricingSection = ({ t }) => {
   const [view, setView] = useState('recruiter'); 
-  const [billing, setBilling] = useState('monthly');
+  const [billing, setBilling] = useState('yearly'); // Default to yearly
 
   return (
     <section id="pricing" className="py-24 bg-[#FAFAFA] border-t border-slate-200 relative">
