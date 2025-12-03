@@ -239,8 +239,8 @@ const content = {
     nav: { about: "About", process: "Process", features: "Features", ai: "AI Demo", pricing: "Pricing", faq: "FAQ", access: "Early Access" },
     hero: {
       tag: "The Future of Recruitment OS",
-      titleStart: "STOP SEARCHING", titleEnd: "START", highlight: "MATCHING",
-      subtitle: "Qonnect lets companies and candidates find each other via smart AI matching instead of searching. For candidates: opportunities that fit. For companies: direct access to relevant talent.",
+      titleStart: "DONE WITH ENDLESSLY", titleEnd: "SEARCHING FOR THE", highlight: "BEST CANDIDATE?",
+      subtitle: "No more buying expensive leads or sending messages to uninterested candidates on LinkedIn. Qonnect is the app that delivers the perfect match!",
       roleCandidate: "Candidate", roleRecruiter: "Recruiter",
       placeholderCandidate: "you@example.com", placeholderRecruiter: "work@company.com",
       joinBtn: "Join Qonnect", loading: "Loading...",
